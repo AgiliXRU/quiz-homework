@@ -1,31 +1,29 @@
 package ru.agilix.quiz.service;
 
-import ru.agilix.quiz.dao.QuestionDao;
+import ru.agilix.quiz.dao.Questionable;
 import ru.agilix.quiz.domain.Question;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionFileService implements QuestionService {
-    private QuestionDao dao;
+    private Questionable dao;
 
     public QuestionFileService() {
 
     }
 
-    public QuestionFileService(QuestionDao dao) {
+    public QuestionFileService(Questionable dao) {
         this.dao = dao;
     }
 
-    public void setDao(QuestionDao dao) {
+    public void setDao(Questionable dao) {
         this.dao = dao;
     }
 
     public Question getById(int id) {
-        return null;
+        return dao.findById(id);
     }
 
     public List<Question> loadAllQuestions() {
-        return new ArrayList<Question>();
+        return null;
     }
 }

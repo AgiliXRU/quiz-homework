@@ -6,7 +6,7 @@
 
     <bean id="questionDao" class="ru.agilix.quiz.dao.QuestionDao"/>
 
-    <bean id="personService" class="ru.agilix.quiz.service.QuestionFileService">
+    <bean id="questionService" class="ru.agilix.quiz.service.QuestionFileService">
         <property name="dao" ref="questionDao"/>
     </bean>
 

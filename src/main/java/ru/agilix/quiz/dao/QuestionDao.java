@@ -6,6 +6,6 @@ public class QuestionDao implements Questionable{
 
     @Override
     public Question findById(int id) {
-        return null;
+        return new Question(1, "text");
     }
 }
