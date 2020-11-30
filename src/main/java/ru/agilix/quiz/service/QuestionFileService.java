@@ -1,29 +1,32 @@
 package ru.agilix.quiz.service;
 
-import ru.agilix.quiz.dao.Questionable;
+import ru.agilix.quiz.dao.QuestionDao;
 import ru.agilix.quiz.domain.Question;
+import ru.agilix.quiz.utils.CVSProcessor;
+
 import java.util.List;
 
 public class QuestionFileService implements QuestionService {
-    private Questionable dao;
+    private CVSProcessor cvsProcessor;
+    private QuestionDao dao;
 
     public QuestionFileService() {
-
     }
 
-    public QuestionFileService(Questionable dao) {
+    public QuestionFileService(QuestionDao dao, CVSProcessor cvsProcessor) {
+        this.dao = dao;
+        this.cvsProcessor = cvsProcessor;
+    }
+
+    public void setDao(QuestionDao dao) {
         this.dao = dao;
     }
 
-    public void setDao(Questionable dao) {
-        this.dao = dao;
+    public void setCvsProcessor(CVSProcessor processor) {
+        this.cvsProcessor = processor;
     }
 
-    public Question getById(int id) {
-        return dao.findById(id);
-    }
-
-    public List<Question> loadAllQuestions() {
-        return null;
+    public List<Question> getAllQuestions() {
+        return dao.getAllQuestions(this.cvsProcessor);
     }
 }

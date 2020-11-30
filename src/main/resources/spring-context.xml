@@ -4,7 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="questionDao" class="ru.agilix.quiz.dao.QuestionDao"/>
+    <bean id="questionDao" class="ru.agilix.quiz.dao.QuestionDao">
+        <constructor-arg name="path" value="/questions.csv" />
+    </bean>
 
     <bean id="questionService" class="ru.agilix.quiz.service.QuestionFileService">
         <property name="dao" ref="questionDao"/>
