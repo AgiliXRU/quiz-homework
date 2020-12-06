@@ -6,5 +6,6 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface QuestionProcessor {
-    List<Question> parseQuestions(InputStream stream);
+    InputStream getStream();
+    List<Question> parseQuestions();
 }

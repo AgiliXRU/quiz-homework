@@ -1,6 +1,5 @@
 package ru.agilix.quiz.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -24,5 +23,14 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public int scoreAnswer(String answer) {
+        int score = 0;
+        for(Answer a : answers) {
+            if (a.getId().toLowerCase().equals(answer.toLowerCase()) && a.isRight)
+                score += 1;
+        }
+        return score;
     }
 }

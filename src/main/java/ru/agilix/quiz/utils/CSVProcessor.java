@@ -13,6 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVProcessor implements QuestionProcessor {
+
+    private String path;
+
+    public CSVProcessor(String path) {
+        this.path = path;
+    }
+
     public BufferedReader getBufferedReader(InputStream stream) {
         return new BufferedReader(new InputStreamReader(stream));
     }
@@ -28,19 +35,31 @@ public class CSVProcessor implements QuestionProcessor {
     }
 
     @Override
-    public List<Question> parseQuestions(InputStream stream) {
+    public List<Question> parseQuestions() {
         List<Question> result = new ArrayList<>();
-        for (CSVRecord record : getRecords(stream)) {
+        for (CSVRecord record : getRecords(getStream())) {
             String id = record.get(0);
             String text = record.get(1);
 
             List<Answer> answers = new ArrayList<>();
             for (int i = 2; i < record.size(); i++) {
-                answers.add(new Answer(i - 2, record.get(i)));
+
+
+                String optionText = record.get(i);
+                boolean isRight = false;
+                if (optionText.startsWith("+")) {
+                    optionText = optionText.substring(1);
+                    isRight = true;
+                }
+                answers.add(new Answer(i - 2, optionText, isRight));
             }
 
             result.add(new Question(Integer.parseInt(id), text, answers));
         }
         return result;
+    }
+
+    public InputStream getStream() {
+        return this.getClass().getResourceAsStream(path);
     }
 }
