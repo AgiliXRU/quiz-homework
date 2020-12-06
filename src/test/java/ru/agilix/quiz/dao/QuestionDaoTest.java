@@ -3,10 +3,10 @@ package ru.agilix.quiz.dao;
 import org.junit.jupiter.api.Test;
 import ru.agilix.quiz.domain.Answer;
 import ru.agilix.quiz.domain.Question;
-import ru.agilix.quiz.utils.CVSProcessor;
+import ru.agilix.quiz.utils.CSVProcessor;
+import ru.agilix.quiz.utils.QuestionProcessor;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,16 +16,16 @@ class QuestionDaoTest {
 
     @Test
     void getAllQuestionsShouldReturnQuestionsFromCSV() {
-        QuestionDao questionDao = new QuestionDao("/some/path");
+        QuestionDao questionDao = new QuestionDao("/some/path", new TestProcessor());
 
-        List<Question> result = questionDao.getAllQuestions(new TestProcessor());
+        List<Question> result = questionDao.getAllQuestions();
 
         assertThat(result.get(0))
                 .matches(q -> q.getText().equals("test"))
                 .matches(q -> q.getId() == 1);
     }
 
-    private class TestProcessor extends CVSProcessor {
+    private class TestProcessor implements QuestionProcessor {
         @Override
         public List<Question> parseQuestions(InputStream stream) {
             List<Answer> answers = Collections.singletonList(new Answer(1, "A"));

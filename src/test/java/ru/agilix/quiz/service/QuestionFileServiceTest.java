@@ -1,6 +1,5 @@
 package ru.agilix.quiz.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -14,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -25,11 +23,11 @@ class QuestionFileServiceTest {
 
     @Test
     void getAllQuestions() throws IOException {
-        QuestionService questionService = new QuestionFileService(questionDao, null);
+        QuestionService questionService = new QuestionFileService(questionDao);
         List<Answer> answers = Collections.singletonList(new Answer(1, "A"));
         Question question = new Question(1, "question", answers);
         List<Question> questionList = List.of(question);
-        given(questionDao.getAllQuestions(any())).willReturn(questionList);
+        given(questionDao.getAllQuestions()).willReturn(questionList);
 
         List<Question> result = questionService.getAllQuestions();
 

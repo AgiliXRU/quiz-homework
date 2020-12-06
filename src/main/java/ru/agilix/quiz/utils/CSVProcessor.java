@@ -12,12 +12,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CVSProcessor {
-    public  BufferedReader getBufferedReader(InputStream stream) {
+public class CSVProcessor implements QuestionProcessor {
+    public BufferedReader getBufferedReader(InputStream stream) {
         return new BufferedReader(new InputStreamReader(stream));
     }
 
-    public  Iterable<CSVRecord> getRecords(InputStream stream) {
+    public Iterable<CSVRecord> getRecords(InputStream stream) {
         Iterable<CSVRecord> records = null;
         try {
             records = CSVFormat.RFC4180.parse(getBufferedReader(stream));
@@ -27,6 +27,7 @@ public class CVSProcessor {
         return records;
     }
 
+    @Override
     public List<Question> parseQuestions(InputStream stream) {
         List<Question> result = new ArrayList<>();
         for (CSVRecord record : getRecords(stream)) {
@@ -35,7 +36,7 @@ public class CVSProcessor {
 
             List<Answer> answers = new ArrayList<>();
             for (int i = 2; i < record.size(); i++) {
-                answers.add(new Answer( i-2, record.get(i)));
+                answers.add(new Answer(i - 2, record.get(i)));
             }
 
             result.add(new Question(Integer.parseInt(id), text, answers));
