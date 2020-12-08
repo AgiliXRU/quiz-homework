@@ -13,21 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVProcessor implements QuestionProcessor {
+    private InputStream stream;
 
-    private String path;
-
-    public CSVProcessor(String path) {
-        this.path = path;
-    }
-
-    public BufferedReader getBufferedReader(InputStream stream) {
-        return new BufferedReader(new InputStreamReader(stream));
+    public CSVProcessor(InputStream stream) {
+        this.stream = stream;
     }
 
     public Iterable<CSVRecord> getRecords(InputStream stream) {
         Iterable<CSVRecord> records = null;
         try {
-            records = CSVFormat.RFC4180.parse(getBufferedReader(stream));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            records = CSVFormat.RFC4180.parse(reader);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,7 +33,7 @@ public class CSVProcessor implements QuestionProcessor {
     @Override
     public List<Question> parseQuestions() {
         List<Question> result = new ArrayList<>();
-        for (CSVRecord record : getRecords(getStream())) {
+        for (CSVRecord record : getRecords(stream)) {
             String id = record.get(0);
             String text = record.get(1);
 
@@ -59,7 +55,4 @@ public class CSVProcessor implements QuestionProcessor {
         return result;
     }
 
-    public InputStream getStream() {
-        return this.getClass().getResourceAsStream(path);
-    }
 }

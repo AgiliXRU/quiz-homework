@@ -15,7 +15,7 @@ class QuestionDaoTest {
 
     @Test
     void getAllQuestionsShouldReturnQuestionsFromCSV() {
-        QuestionDao questionDao = new QuestionDao(new TestProcessor("/some/path"));
+        QuestionDao questionDao = new QuestionDao(new TestProcessor());
 
         List<Question> result = questionDao.getAllQuestions();
 
@@ -25,14 +25,7 @@ class QuestionDaoTest {
     }
 
     private class TestProcessor implements QuestionProcessor {
-        public TestProcessor(String path) {
 
-        }
-
-        @Override
-        public InputStream getStream() {
-            return null;
-        }
 
         @Override
         public List<Question> parseQuestions() {
