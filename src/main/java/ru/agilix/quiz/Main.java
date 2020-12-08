@@ -11,16 +11,10 @@ import ru.agilix.quiz.utils.ResourceReader;
 @PropertySource("classpath:application.properties")
 public class Main {
 
-//    @Bean
-//    QuestionProcessor csvProcessor(@Value("${questions.file}") String path) {
-//        return new CSVProcessor(this.getClass().getResourceAsStream(path));
-//    }
-
     @Bean
     ResourceReader csvReader(@Value("${questions.file}") String path) {
         return new CsvReader(path);
     }
-
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
