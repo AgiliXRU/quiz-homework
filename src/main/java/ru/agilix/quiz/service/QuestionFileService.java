@@ -19,7 +19,7 @@ public class QuestionFileService implements QuestionService {
     public void runQuiz() {
         User user = uiService.getUser();
         for (Question question : dao.getAllQuestions()) {
-            uiService.display(question);
+            uiService.displayQuestion(question);
             user.updateScore(question.scoreAnswer(uiService.getAnswer()));
         }
         uiService.displayResultsFor(user);

@@ -5,42 +5,42 @@ import ru.agilix.quiz.domain.Answer;
 import ru.agilix.quiz.domain.Question;
 import ru.agilix.quiz.domain.User;
 
-import java.util.Scanner;
-
 @Service
 public class ConsoleUIService implements UIService {
-    private Scanner scanner;
+    private final IOService readerWriter;
 
-    public ConsoleUIService() {
-        this.scanner = new Scanner(System.in);
+    public ConsoleUIService(IOService readerWriter) {
+        this.readerWriter = readerWriter;
     }
 
     @Override
     public User getUser() {
-        System.out.println("Enter your First name: ");
-        String firstName = scanner.next();
-        System.out.println("Enter your Last name: ");
-        String lastName = scanner.next();
-        return new User(firstName + " " +lastName);
+        readerWriter.displayText("Enter your First name: ");
+        String firstName = readerWriter.getText();
+
+        readerWriter.displayText("Enter your Last name: ");
+        String lastName = readerWriter.getText();
+        return new User(firstName + " " + lastName);
     }
 
     @Override
-    public void display(Question question) {
-        System.out.printf("\n%d.) %s\n", question.getId(), question.getText());
+    public void displayQuestion(Question question) {
+        String text = "\n" + question.getId() + ".) " + question.getText();
 
         for (Answer answer : question.getAnswers()) {
-            System.out.printf("\t [%s] %s\n", answer.getId(), answer.getText());
+            text += "\n\t [" + answer.getId() + "] " + answer.getText();
         }
+        readerWriter.displayText(text);
     }
 
     @Override
     public void displayResultsFor(User user) {
-        System.out.printf("Score for student %s is: %d\n", user.getUsername(), user.getScore());
+        readerWriter.displayText("Score for student " + user.getUsername() + " is: " + user.getScore() + "\n");
     }
 
     @Override
     public String getAnswer() {
-        System.out.println("\nType your answer: ");
-        return scanner.next();
+        readerWriter.displayText("\nType your answer: ");
+        return readerWriter.getText();
     }
 }

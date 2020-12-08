@@ -6,9 +6,9 @@ import ru.agilix.quiz.domain.User;
 public interface UIService {
     User getUser();
 
-    void display(Question question);
-
-    void displayResultsFor(User user);
+    void displayQuestion(Question question);
 
     String getAnswer();
+
+    void displayResultsFor(User user);
 }
