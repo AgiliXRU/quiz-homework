@@ -1,21 +1,24 @@
 package ru.agilix.quiz;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.agilix.quiz.domain.Answer;
-import ru.agilix.quiz.domain.Question;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
+import ru.agilix.quiz.utils.CsvReader;
 import ru.agilix.quiz.service.QuestionFileService;
+import ru.agilix.quiz.utils.ResourceReader;
 
+@ComponentScan
+@Configuration
+@PropertySource("classpath:application.properties")
 public class Main {
 
-    public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
-        QuestionFileService service = context.getBean(QuestionFileService.class);
-        for (Question question : service.getAllQuestions()) {
-            System.out.printf("\n%d.) %s\n", question.getId(), question.getText());
+    @Bean
+    ResourceReader csvReader(@Value("${questions.file}") String path) {
+        return new CsvReader(path);
+    }
 
-            for (Answer answer : question.getAnswers()) {
-                System.out.printf("\t [%s] %s\n", answer.getId(), answer.getText());
-            }
-        }
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+        QuestionFileService service = context.getBean(QuestionFileService.class);
+        service.runQuiz();
     }
 }

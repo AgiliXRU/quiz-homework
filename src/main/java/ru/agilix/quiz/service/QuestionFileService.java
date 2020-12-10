@@ -1,24 +1,27 @@
 package ru.agilix.quiz.service;
 
-import ru.agilix.quiz.dao.QuestionDao;
+import org.springframework.stereotype.Service;
+import ru.agilix.quiz.dao.Questionable;
 import ru.agilix.quiz.domain.Question;
-import java.util.List;
+import ru.agilix.quiz.domain.User;
 
+@Service
 public class QuestionFileService implements QuestionService {
-    private QuestionDao dao;
+    private Questionable dao;
+    private UIService uiService;
 
-    public QuestionFileService() {
-    }
-
-    public QuestionFileService(QuestionDao dao) {
+    public QuestionFileService(Questionable dao, UIService uiService) {
         this.dao = dao;
+        this.uiService = uiService;
     }
 
-    public void setDao(QuestionDao dao) {
-        this.dao = dao;
-    }
-
-    public List<Question> getAllQuestions() {
-        return dao.getAllQuestions();
+    @Override
+    public void runQuiz() {
+        User user = uiService.getUser();
+        for (Question question : dao.getAllQuestions()) {
+            uiService.displayQuestion(question);
+            user.updateScore(question.scoreAnswer(uiService.getAnswer()));
+        }
+        uiService.displayResultsFor(user);
     }
 }
